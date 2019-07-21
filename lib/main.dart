@@ -1,111 +1,409 @@
 import 'package:flutter/material.dart';
 
-void main() => runApp(MyApp());
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/painting.dart';
 
-class MyApp extends StatelessWidget {
-  // This widget is the root of your application.
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
-        primarySwatch: Colors.blue,
-      ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
+import 'package:flutterfitnesss/pages/calculadora_imc.dart';
+import 'package:flutterfitnesss/pages/nosotros.dart';
+
+void main(){
+  runApp(
+    MaterialApp(
+      title: 'App Fitness',
+      home: Home(),
+    ),
+  );
 }
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class Home extends StatefulWidget {
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _HomeState createState() => _HomeState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomeState extends State<Home> {
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  //Creamos un arreglo de datos imagenes y nombre ejercicio
+  List<Container> listamos = List();
+
+  var arreglox = [
+    {
+      "nombre": "Pierna", 
+      "imagen": "pierna2.jpg", 
+      "ejercicio": "Trabajo con polea 4 repeticiones de 12"
+    },
+    {
+      "nombre": "Pesas", 
+      "imagen": "pesas.jpg", 
+      "ejercicio": "Trabajo con pesas ..."
+    },
+    {
+      "nombre": "Cinta Elastica", 
+      "imagen": "cinta.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Cinta", 
+      "imagen": "cinta2.jpg", 
+      "ejercicio": "Trabajo con cinta 2 repeticiones de 15"
+    },
+    {
+      "nombre": "Abdomen", 
+      "imagen": "abdomen2.jpg", 
+      "ejercicio": "Abdomen alto ..."
+    },
+    {
+      "nombre": "Peso", 
+      "imagen": "peso.jpg", 
+      "ejercicio": "Trabajo pesas de 5 Kg"
+    },
+    {
+      "nombre": "Pierna + Gluteos", 
+      "imagen": "pierna2.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Gluteos", 
+      "imagen": "gluteos.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Mas Gluteos", 
+      "imagen": "gluteos2.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Pierna ...", 
+      "imagen": "pierna.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Barra", 
+      "imagen": "barra2.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Rusa", 
+      "imagen": "rusa.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Pierna ...", 
+      "imagen": "pierna3.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Cinta Elastica", 
+      "imagen": "cinta.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Peso 2", 
+      "imagen": "peso2.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Mancuernas", 
+      "imagen": "mancuernas.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Estiramiento", 
+      "imagen": "estiramiento.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Gluteos 4", 
+      "imagen": "pierna2.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+    {
+      "nombre": "Barra de 5K", 
+      "imagen": "barra.jpg", 
+      "ejercicio": "Trabajo con cinta 4 repeticiones de 15"
+    },
+  ];
+
+  //=recorremos el arreglo
+
+  _listado() async{
+    for (var i = 0; i < arreglox.length; i++){
+      final arregloxyz = arreglox[i];
+      final String imagen = arregloxyz["imagen"];
+
+      listamos.add(
+        Container(
+          padding: EdgeInsets.all(10.0),
+          child: Card(
+            child: Column(
+              children: <Widget>[
+                Hero(
+                  tag: arregloxyz['nombre'],
+                  child: Material(
+                    child: InkWell(
+                      onTap: () => 
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (BuildContext context) => Detalle(
+                          nombre: arregloxyz['nombre'],
+                          imagen: imagen,
+                          deporte: arregloxyz['ejercicio'],
+                        ),
+                      )),
+                      child: Image.asset(
+                        "assets/images/$imagen",
+                        fit: BoxFit.contain
+                      ),
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.all(3.0),
+                ),
+                Text(
+                  arregloxyz['nombre'],
+                  style: TextStyle(
+                    fontSize: 20.0,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    _listado();
+    super.initState();
+  }
+
+
+  //creamos el layout o disenio
+  @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
+        title: Text('Fitness 2019'),
+        backgroundColor: Colors.orange,
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
+      drawer: Drawer(
+        child: ListView(
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            UserAccountsDrawerHeader(
+              accountName: Text('Ejercicios'),
+              accountEmail: Text('codigoalpha@gmail.com'),
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.fill,
+                  image: AssetImage('assets/images/g;uteos.jpg')
+                ),
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+
+            Divider(),
+            ListTile(
+              title: Text("Calculadora IMC"),
+              trailing: Icon(Icons.fitness_center),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute (
+                builder: (BuildContext context) => CalcImc(),
+              )),
+            ),
+
+            Divider(),
+            ListTile(
+              title: Text("Nosotros"),
+              trailing: Icon(Icons.fitness_center),
+              onTap: () => Navigator.of(context).push(MaterialPageRoute (
+                builder: (BuildContext context) => Nosotros(),
+              )),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      body: GridView.count(
+        crossAxisCount: 2,  //numero de columnas
+        mainAxisSpacing: 0.1,
+        childAspectRatio: 0.700,
+        children: listamos,
+      ),
+    );
+  }
+}
+
+//creamos el metodo Detalle
+
+class Detalle extends StatelessWidget {
+
+  final String nombre;
+  final String imagen;
+  final String deporte;
+  Detalle({this.nombre, this.imagen, this.deporte});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold( 
+      resizeToAvoidBottomPadding: false,
+      body: ListView(
+        children: <Widget>[
+          Container(
+            height: 240.0,
+            child: Hero(
+              tag: nombre,
+              child: Material(
+                child: InkWell(
+                  child: Image.asset(
+                    "assets/images/$imagen",
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          IniciarNombre(
+            nombre: nombre,
+          ),
+          IniciarIcon(),
+          Informacion(
+            deporte: deporte,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class IniciarNombre extends StatelessWidget {
+
+  final String nombre;
+  IniciarNombre({this.nombre});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        children: <Widget>[
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Text(
+                  nombre,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    color: Colors.blue,
+                  ),
+                ),
+                Text(
+                  "$nombre\@gmail.com",
+                  style: TextStyle(
+                     fontSize: 15.0,
+                     color: Colors.blueGrey,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Row(
+            children: <Widget>[
+              Icon(
+                Icons.star,
+                size: 30.0,
+                color: Colors.red,
+              ),
+               Text(
+                 "12",
+                 style: TextStyle(
+                   fontSize: 18.0,
+                 ),
+               ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class IniciarIcon extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10.0),
+      child: Row(
+        children: <Widget>[
+          IconTec(
+            icon: Icons.call,
+            tec: "call",
+          ),
+          IconTec(
+            icon: Icons.message,
+            tec: "WhastApp",
+          ),
+          IconTec(
+            icon: Icons.photo,
+            tec: "Foto",
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class IconTec extends StatelessWidget {
+
+  final IconData icon;
+  final String tec;
+  IconTec({this.icon, this.tec});
+
+  @override
+  Widget build(BuildContext context) {
+    return Expanded(
+      child: Column(
+        children: <Widget>[
+          Icon(
+            icon,
+            size: 50.0,
+            color: Colors.blue,
+          ),
+          Text(
+            tec,
+            style: TextStyle(
+              fontSize: 12.0,
+              color: Colors.blue,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+
+class Informacion extends StatelessWidget {
+
+  final String deporte;
+  Informacion({this.deporte});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      height: 500,
+      padding: EdgeInsets.all(10.0),
+      child: Card(
+        child: Padding(
+          padding: EdgeInsets.all(10.0),
+          child: Text(
+            deporte,
+            style: TextStyle(
+              fontSize: 16.0,
+              color: Colors.blue,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
